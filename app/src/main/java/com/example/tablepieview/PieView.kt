@@ -12,6 +12,7 @@ import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import java.util.*
 import kotlin.math.cos
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 
@@ -119,7 +120,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         //边距重新计算（包含文字长度）
         radius =
-            min(h, w) / 2 * 0.9f - arcsWidth - maxTextWidth - spreadLineStartLength - spreadLineEndLength - min(
+            min(h, w) / 2 - arcsWidth / 2 - maxTextWidth - spreadLineStartLength - spreadLineEndLength - max(
                 spreadLineTextOffsetHorizontal,
                 spreadLineTextOffsetVertical
             )
@@ -351,6 +352,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
         var maxWidth = 0
         for (i in titles.indices) {
             val tp = TextPaint()
+            tp.textSize = spreadLineTextSize
             val rect = Rect()
             val strTxt = titles[i]
             tp.getTextBounds(strTxt, 0, strTxt.length, rect)
