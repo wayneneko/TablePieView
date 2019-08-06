@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.example.tablepieview.PieView
+        android:id="@+id/pieView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/tableView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:pie_bg_circle_width="55dp"
+        app:pie_main_circle_width="65dp"
+        app:pie_spread_line_length_end="35dp"
+        app:pie_spread_line_length_start="35dp"
+        app:pie_spread_text_direction="out"
+        app:pie_spread_text_offset_horizontal="10dp"
+        app:pie_start_angle="-90" />
+    <!--app:pie_spread_text_offset_vertical="10dp"-->
+
+    <com.example.tablepieview.TableView
+        android:id="@+id/tableView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintLeft_toRightOf="@id/pieView"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:table_axis_line_width="1dp"
+        app:table_dash_line_color="#c9c9c9"
+        app:table_point_circle_color="#65C9FF"
+        app:table_point_circle_width="3dp"
+        app:table_point_line_color="#65C9FF"
+        app:table_point_line_width="3dp"
+        app:table_solid_line_color="#c9c9c9"
+        app:table_x_text_color="#333333"
+        app:table_x_text_size="14sp"
+        app:table_y_text_color="#333333"
+        app:table_y_text_size="14sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
