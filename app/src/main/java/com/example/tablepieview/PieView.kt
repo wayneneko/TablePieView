@@ -54,8 +54,6 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     private var spreadLineTextSize: Float
     //延长线描述文字所在方向（out为延长线外侧且居中对齐）
     private var spreadLineTextDirection: Int
-    //中心布局
-    private var layoutId: Int = 0
 
     private val defaultHeight = 300
     private var radius: Float = 0f
@@ -130,25 +128,21 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
 
         rectF.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
         Log.d("TAG", "width radius = $radius")
-
-        invalidate()
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        Log.d("TAG", " ==setCenterLayout== onDraw")
         canvas?.let {
             drawBaseCircle(it)
             drawArcs(it)
         }
-        if (layoutId != 0) {
-            setCenterLayout(layoutId)
-        }
     }
 
     fun setCenterLayout(@LayoutRes centerLayoutId: Int) {
+        Log.d("TAG", " ==setCenterLayout== ")
         //中间的布局
-        layoutId = centerLayoutId
         val view = LayoutInflater.from(context).inflate(centerLayoutId, null)
         val width = (radius).toInt()
         val height = (radius).toInt()
@@ -156,7 +150,6 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
             val layoutParams = LayoutParams(width, height)
             layoutParams.addRule(CENTER_IN_PARENT)
             addView(view, layoutParams)
-            invalidate()
         }
     }
 
