@@ -66,6 +66,10 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     private var metrics = Paint.FontMetrics()
     //最长文字长度
     private var maxTextWidth: Int = 0
+    //中间布局id
+    private var centerViewId: Int = 0
+    //是否添加过中间布局
+    private var hasAddCenterView: Boolean = false
 
     private var baseCirclePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var arcsPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -127,7 +131,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
         centerY = h / 2
 
         rectF.set(centerX - radius, centerY - radius, centerX + radius, centerY + radius)
-        Log.d("TAG", "width radius = $radius")
+        Log.d("TAG", "setCenterLayout == width radius = $radius")
         super.onSizeChanged(w, h, oldw, oldh)
     }
 
@@ -138,18 +142,30 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
             drawBaseCircle(it)
             drawArcs(it)
         }
+
+        if (!hasAddCenterView) {
+            drawCenterLayout(centerViewId)
+        }
     }
 
     fun setCenterLayout(@LayoutRes centerLayoutId: Int) {
         Log.d("TAG", " ==setCenterLayout== ")
+        centerViewId = centerLayoutId
+    }
+
+    private fun drawCenterLayout(@LayoutRes centerLayoutId: Int) {
+        hasAddCenterView = true
+        Log.d("TAG", " ==setCenterLayout== drawCenterLayout = $radius")
         //中间的布局
         val view = LayoutInflater.from(context).inflate(centerLayoutId, null)
         val width = (radius).toInt()
         val height = (radius).toInt()
         if (view != null) {
+            Log.d("TAG", " ==setCenterLayout== drawCenterLayout = $width,$height")
             val layoutParams = LayoutParams(width, height)
             layoutParams.addRule(CENTER_IN_PARENT)
-            addView(view, layoutParams)
+            view.layoutParams = layoutParams
+            addView(view)
         }
     }
 

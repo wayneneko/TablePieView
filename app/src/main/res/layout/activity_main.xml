@@ -24,6 +24,7 @@
     <!--app:pie_spread_text_offset_vertical="10dp"-->
 
     <com.example.tablepieview.TableView
+        android:visibility="gone"
         android:id="@+id/tableView"
         android:layout_width="0dp"
         android:layout_height="0dp"

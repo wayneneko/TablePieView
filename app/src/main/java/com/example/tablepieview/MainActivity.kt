@@ -15,9 +15,10 @@ class MainActivity : AppCompatActivity() {
         pieView?.setPieData(arrayListOf(*colors), arrayListOf(*colors), arrayListOf(*angles))
         pieView?.setCenterLayout(R.layout.layout_table_pie_text)
 
+
         val xAxisTexts = arrayOf("8/10", "8/11", "8/12", "8/13", "8/14", "8/15")
         val yAxisValue = arrayOf(4, 20, 35, 40, 80, 56)
-        tableView?.setData(arrayListOf(*xAxisTexts), arrayListOf(*yAxisValue),100)
+        tableView?.setData(arrayListOf(*xAxisTexts), arrayListOf(*yAxisValue), 100)
 
     }
 }
