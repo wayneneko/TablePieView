@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:pie_bg_circle_width="55dp"
         app:pie_main_circle_width="65dp"
+        app:pie_bg_circle_background="@android:color/black"
         app:pie_spread_line_length_end="35dp"
         app:pie_spread_line_length_start="35dp"
         app:pie_spread_text_direction="out"
@@ -41,10 +42,10 @@
         app:table_point_line_width="3dp"
         app:table_solid_line_color="#c9c9c9"
         app:table_x_text_color="#333333"
-        app:table_x_text_offset="@dimen/x20"
+        app:table_x_text_offset="20dp"
         app:table_x_text_size="14sp"
         app:table_y_text_color="#333333"
-        app:table_y_text_offset="@dimen/x12"
+        app:table_y_text_offset="12dp"
         app:table_y_text_size="14sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

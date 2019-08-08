@@ -20,6 +20,8 @@
             <enum name="bottom" value="3" />
         </attr>
         <attr name="pie_start_angle" format="integer" />
+        <attr name="pie_circle_radius" format="dimension" />
+        <attr name="pie_spread_line_width" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="TableView">

@@ -11,10 +11,7 @@ import android.view.LayoutInflater
 import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.sin
+import kotlin.math.*
 
 
 /**
@@ -41,6 +38,8 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     private var spreadLineEndLength: Float
     //延长线拐点圆弧
     private var spreadLineRadius: Float
+    //延长线宽度
+    private var spreadLineWidth: Float
     //延长线是否需要虚线
     private var isLineDash: Boolean
     //延长线拐点是否需要圆角
@@ -70,6 +69,8 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     private var centerViewId: Int = 0
     //是否添加过中间布局
     private var hasAddCenterView: Boolean = false
+    //圆球半径
+    private var circleRadius: Float = 0f
 
     private var baseCirclePaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
     private var arcsPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -97,6 +98,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
         spreadLineStartLength = typedArray.getDimension(R.styleable.PieView_pie_spread_line_length_start, dp2px(50f))
         spreadLineEndLength = typedArray.getDimension(R.styleable.PieView_pie_spread_line_length_end, dp2px(120f))
         spreadLineRadius = typedArray.getDimension(R.styleable.PieView_pie_spread_line_radius, dp2px(30f))
+        spreadLineWidth = typedArray.getDimension(R.styleable.PieView_pie_spread_line_width, dp2px(5f))
         isLineDash = typedArray.getBoolean(R.styleable.PieView_pie_is_line_dash, true)
         isLineRounded = typedArray.getBoolean(R.styleable.PieView_pie_is_line_rounded, true)
         isLineCircle = typedArray.getBoolean(R.styleable.PieView_pie_is_line_circle, true)
@@ -107,7 +109,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
         spreadLineTextSize = typedArray.getDimension(R.styleable.PieView_pie_spread_text_size, sp2px(18f))
         spreadLineTextDirection = typedArray.getInt(R.styleable.PieView_pie_spread_text_direction, DIR_OUT)
         pieStartAngle = typedArray.getInt(R.styleable.PieView_pie_start_angle, 0).toFloat()
-
+        circleRadius = typedArray.getDimension(R.styleable.PieView_pie_circle_radius, dp2px(5f))
         typedArray.recycle()
     }
 
@@ -158,8 +160,8 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
         Log.d("TAG", " ==setCenterLayout== drawCenterLayout = $radius")
         //中间的布局
         val view = LayoutInflater.from(context).inflate(centerLayoutId, null)
-        val width = (radius).toInt()
-        val height = (radius).toInt()
+        val width = ((radius - arcsWidth / 2) * sqrt(2.0)).toInt()
+        val height = ((radius - arcsWidth / 2) * sqrt(2.0)).toInt()
         if (view != null) {
             Log.d("TAG", " ==setCenterLayout== drawCenterLayout = $width,$height")
             val layoutParams = LayoutParams(width, height)
@@ -185,7 +187,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     private fun drawSpreadLine(canvas: Canvas, startAngles: Float, index: Int) {
         linePaint.color = Color.parseColor(pieColors[index])
         linePaint.style = Paint.Style.STROKE
-        linePaint.strokeWidth = 5f
+        linePaint.strokeWidth = spreadLineWidth
 
         val lineLocation = getLineLocation(startAngles, index)
 
@@ -226,7 +228,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
             DIR_TOP -> {
                 canvas.drawText(
                     spreadLineText,
-                    if (isLocatedLeft(lineLocation.lineStartX)) lineLocation.lineFinalEndX + spreadLineTextOffsetHorizontal else lineLocation.lineFinalEndX - spreadLineTextOffsetHorizontal - textWidth,
+                    if (isLocatedLeft(lineLocation.lineStartX)) lineLocation.lineFinalEndX - spreadLineTextOffsetHorizontal else lineLocation.lineFinalEndX + spreadLineTextOffsetHorizontal - textWidth,
                     lineLocation.lineFinalEndY - spreadLineTextOffsetVertical,
                     textPaint
                 )
@@ -234,7 +236,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
             DIR_BOTTOM -> {
                 canvas.drawText(
                     spreadLineText,
-                    if (isLocatedLeft(lineLocation.lineStartX)) lineLocation.lineFinalEndX + spreadLineTextOffsetHorizontal else lineLocation.lineFinalEndX - spreadLineTextOffsetHorizontal - textWidth,
+                    if (isLocatedLeft(lineLocation.lineStartX)) lineLocation.lineFinalEndX - spreadLineTextOffsetHorizontal else lineLocation.lineFinalEndX + spreadLineTextOffsetHorizontal - textWidth,
                     lineLocation.lineFinalEndY + spreadLineTextOffsetVertical - offset * 2,
                     textPaint
                 )
@@ -251,7 +253,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
             linePaint.style = Paint.Style.FILL
             canvas.drawCircle(
                 lineLocation.lineFinalEndX,
-                lineLocation.lineFinalEndY, 10f, linePaint
+                lineLocation.lineFinalEndY, circleRadius, linePaint
             )
         }
     }
@@ -307,7 +309,7 @@ class PieView constructor(context: Context, attrs: AttributeSet) : RelativeLayou
     }
 
     private fun drawBaseCircle(canvas: Canvas) {
-        baseCirclePaint.color = Color.parseColor("#F6F5F5")
+        baseCirclePaint.color = baseCircleBg
         baseCirclePaint.style = Paint.Style.STROKE
         baseCirclePaint.strokeWidth = baseCircleWidth
         canvas.drawCircle(centerX.toFloat(), centerY.toFloat(), radius, baseCirclePaint)
