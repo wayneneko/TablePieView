@@ -41,8 +41,10 @@
         app:table_point_line_width="3dp"
         app:table_solid_line_color="#c9c9c9"
         app:table_x_text_color="#333333"
+        app:table_x_text_offset="@dimen/x20"
         app:table_x_text_size="14sp"
         app:table_y_text_color="#333333"
+        app:table_y_text_offset="@dimen/x12"
         app:table_y_text_size="14sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

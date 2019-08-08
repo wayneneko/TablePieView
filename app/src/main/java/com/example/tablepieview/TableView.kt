@@ -19,7 +19,12 @@ class TableView constructor(context: Context, attrs: AttributeSet) : View(contex
     //第一条横线对于顶部的距离(Y轴单位距离的1/2)
     private var firstHorLineToTop = 0f
     //文字和横纵坐标间距偏移量
-    private val xyOffset = 20
+//    private val xyOffset = 20
+
+    //X轴文字距离坐标轴的偏移量
+    private val xTextOffset = 0f
+    //Y轴文字距离坐标轴的偏移量
+    private val yTextOffset = 0f
     //最后一条横线和第一条横线Y的差值
     private var diffY = 0f
 
@@ -102,6 +107,7 @@ class TableView constructor(context: Context, attrs: AttributeSet) : View(contex
         solidLineColor = typedArray.getColor(R.styleable.TableView_table_solid_line_color, Color.BLACK)
         dashLineColor = typedArray.getColor(R.styleable.TableView_table_dash_line_color, Color.BLACK)
         axisLineWidth = typedArray.getDimension(R.styleable.TableView_table_axis_line_width, dp2px(5f))
+        circleRadius = typedArray.getDimension(R.styleable.TableView_table_point_radius, dp2px(5f))
         typedArray.recycle()
         initPaint()
     }
@@ -172,21 +178,24 @@ class TableView constructor(context: Context, attrs: AttributeSet) : View(contex
     }
 
     private fun drawTable(canvas: Canvas) {
-        //纵坐标间隔单位（约定纵坐标为数字）
-        val xUnit = xTotal / horizontalLineCount
-        //获取Y轴文字的最大宽度
-        val yMaxWidth = getMaxWidth(xUnit)
-        //获取X轴文字的高度
-        xAxisTextHeight = getTextHeight(xAxisTexts[0])
+        if (xAxisTexts.size > 0 && yAxisValue.size > 0) {
 
-        drawHorizontalLine(canvas, xUnit, yMaxWidth)
-        drawVerticalLine(canvas, yMaxWidth)
+            //纵坐标间隔单位（约定纵坐标为数字）
+            val xUnit = xTotal / horizontalLineCount
+            //获取Y轴文字的最大宽度
+            val yMaxWidth = getMaxWidth(xUnit)
+            //获取X轴文字的高度
+            xAxisTextHeight = getTextHeight(xAxisTexts[0])
+
+            drawHorizontalLine(canvas, xUnit, yMaxWidth)
+            drawVerticalLine(canvas, yMaxWidth)
+        }
     }
 
     private fun drawHorizontalLine(canvas: Canvas, xUnit: Int, xMaxWidth: Int) {
         //Y轴横线单位距离(上面有0.5单位的间距)，控件高度-X轴文字高度-文字距离最下面一根线的偏移量
         val spaceY =
-            ((viewHeight - xAxisTextHeight - xyOffset - paddingTop - paddingBottom) / (horizontalLineCount + 0.5)).toFloat()
+            ((viewHeight - xAxisTextHeight - yTextOffset - paddingTop - paddingBottom) / (horizontalLineCount + 0.5)).toFloat()
         val startX = 0f + paddingStart
         var startY = 0f
         val endX = viewWidth.toFloat() - paddingEnd
@@ -211,7 +220,7 @@ class TableView constructor(context: Context, attrs: AttributeSet) : View(contex
             }
 
             //水平线的起始X
-            val realX = startX + xMaxWidth + xyOffset
+            val realX = startX + xMaxWidth + xTextOffset
             //画线
             if (i == horizontalLineCount) {
                 //最后一条水平线的Y
@@ -232,13 +241,13 @@ class TableView constructor(context: Context, attrs: AttributeSet) : View(contex
 
     private fun drawVerticalLine(canvas: Canvas, xMaxWidth: Int) {
         //文字宽度（最宽）+ 文字和第一根垂直线距离
-        val xOffsetToVerticalLine = xMaxWidth + xyOffset
+        val xOffsetToVerticalLine = xMaxWidth + xTextOffset
         xAxisCount = min(xAxisTexts.size, yAxisValue.size)
         val verticalCount = if (xAxisCount == 1) xAxisCount else xAxisCount - 1
         val spaceX = ((viewWidth - marginEndOffset - xOffsetToVerticalLine - paddingStart - paddingEnd) / verticalCount)
         var startX = 0f
         val startY = 0f + paddingTop
-        val endY = viewHeight.toFloat() - xAxisTextHeight - xyOffset - paddingBottom
+        val endY = viewHeight.toFloat() - xAxisTextHeight - yTextOffset - paddingBottom
 
         var lastPointX = 0f
         var lastPointY = 0f
