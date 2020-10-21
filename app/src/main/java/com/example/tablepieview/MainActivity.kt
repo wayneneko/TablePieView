@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
         println("add commit")
         println("add commit222222")
+        println("modify on git test ")
 
 
     }
