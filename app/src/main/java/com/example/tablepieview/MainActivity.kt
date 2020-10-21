@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
         tableView?.setData(arrayListOf(*xAxisTexts), arrayListOf(*yAxisValue), 100)
 
         println("add commit")
+        println("add commit222222")
 
 
     }
