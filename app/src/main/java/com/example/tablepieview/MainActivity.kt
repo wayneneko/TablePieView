@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         println("add commit222222")
         println("modify on git test ")
         println("this is git demo")
+        println("this is git push demo")
 
 
     }
