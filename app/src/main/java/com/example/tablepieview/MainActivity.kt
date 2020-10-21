@@ -20,5 +20,8 @@ class MainActivity : AppCompatActivity() {
         val yAxisValue = arrayOf(4, 20, 35, 40, 80, 56)
         tableView?.setData(arrayListOf(*xAxisTexts), arrayListOf(*yAxisValue), 100)
 
+        println("add commit")
+
+
     }
 }
