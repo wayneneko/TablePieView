@@ -27,5 +27,8 @@ class MainActivity : AppCompatActivity() {
         println("this is git push demo")
 
 
+        println("test demo fuck ")
+
+
     }
 }
